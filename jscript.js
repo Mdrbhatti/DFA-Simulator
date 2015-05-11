@@ -33,7 +33,6 @@ function findStateObject(name)
 
 function recur(currentStateObject, transitions)
 {
-	currentStateObject.loopedOver = 1;
 	if (transitions.length <= 0)
 		return;
 	else
@@ -46,6 +45,7 @@ function recur(currentStateObject, transitions)
 			    currentStateObject.next[symbol] = nextStateObj;
 			    if(nextStateObj.loopedOver != 1)
 			    {
+			    	currentStateObject.loopedOver = 1;
 			    	recur(nextStateObj, nextStateObj.transitions);
 			    }			    
 			}
@@ -78,10 +78,11 @@ function verifyString(form)
 {
 	var stringToCheck = form.inputString.value;
 	var tempState = startStateObj;
-
+	var ver_el = document.getElementById("stringValidationText");
 	if(stringToCheck=="" && tempState.finalState==1)
 	{
-		console.log("NULL ACCEPTING");
+		ver_el.innerHTML ='<font face="verdana" color="green">Valid!</font>';
+		// console.log("NULL ACCEPTING");
 		return 1;
 	}
 	
@@ -91,14 +92,17 @@ function verifyString(form)
 		tempState = tempState.next[stringToCheck.charAt(i)];
 		if(!tempState)
 		{
+			ver_el.innerHTML ='<font face="verdana" color="red">Invalid!</font>';
 			return 0;
 		}
 	}
 	if(tempState.finalState == 1)
 	{
-		console.log("ACCEPTING");
+		// console.log("ACCEPTING");
+		ver_el.innerHTML ='<font face="verdana" color="green">Valid!</font>';
 		return 1;
 	}
+	ver_el.innerHTML ='<font face="verdana" color="red">Invalid!</font>';
 	return 0;
 }
 
