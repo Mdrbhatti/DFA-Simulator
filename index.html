@@ -8,31 +8,15 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="http://getbootstrap.com/assets/ico/favicon.ico">
 
-    <title>Hangman</title>
+    <title>DFA Simulator</title>
 
-    <!-- Bootstrap core CSS -->
     <link href="bootstrap.css" rel="stylesheet">
-    <!-- Bootstrap theme -->
     <link href="bootstrap-theme.css" rel="stylesheet">
     <link href="bootstrap.min.css" rel="stylesheet">
-    <link href="keyboard.css" rel="stylesheet">
-
-<!-- Documentation extras -->
     <link href="docs.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
     <link href="theme.css" rel="stylesheet">
-     <!-- <script src="crajax.js"></script> -->
-
-    <!-- Just for debugging purposes. Don't actually copy this line! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
+    <script src="jscript.js"></script>
+ 
   <style type="text/css" id="holderjs-style"></style></head>
 
   <body role="document">
@@ -47,7 +31,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Assgn #2</a>
+          <a class="navbar-brand" href="#">Automata Project</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -62,11 +46,48 @@
       <!-- Main jumbotron for a primary marketing message or call to action -->
 
       <div class="jumbotron">
-        <center><h2 id="ddd">DFA Emulator</h2></center>
+        <center><h2 id="ddd">DFA Simulator</h2></center>
         <div class="bs-callout bs-callout-info">
-        </div>
+        <form id = "dfaform" action="">
+          <label class="checkbox-inline" id = "startingStateLabel" style="visibility:visible;">
+          <!-- !-->
+            <input type="checkbox" id="startingState" name="startingState" value="1" > <strong>Starting State</strong>
+          </label>
+          </br>
+          <label class="checkbox-inline">
+          <!-- !-->
+            <input type="checkbox" id="finalState" name="finalState" value="1"> <strong>Final State</strong>
+          </label>
+          </br>
+          </br>
+          <div class="form-group">
+            <label for="exampleInputEmail3">State</label>
+            <!-- !-->
+            <input type="text" class="form-control" id="stateName" name="stateName" placeholder="State Name" required>
+            <label for="exampleInputEmail3">Transitions</label>
+            <!-- !-->
+            <input type="text" class="form-control" id="transitions" name="transitions" placeholder="(Symbol, Next-State) separated by commas -> (1,b), (2,d), (3,e)">
+          </div>
+          </br>
+          <!-- !-->
+         <button type="button" class="btn btn-primary" onclick="dfaCreator(this.form)">Add</button>
+        </form>
 
-    </div> <!-- /container -->
+        <form id = "stringForm" action="">
+          <div class="form-group">
+            <label for="exampleInputEmail3">Input String</label>
+            <!-- !-->
+          <input type="text" class="form-control" id="inputString" name="inputString" placeholder="Enter String" required>
+          </div>
+          <button type="button" class="btn btn-primary" onclick="verifyString(this.form)">Add</button>
+        </form>
+
+        </div>
+        <center><button type="button" class="btn btn-primary">Create DFA</button></center>
+        </br>
+        </br>
+        <center><button type="button" class="btn btn-primary">Show Transition Table</button></center>
+      </div> <!-- /container -->
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -74,6 +95,6 @@
     <script src="jquery.js"></script>
     <script src="bootstrap.js"></script>
     <script src="docs.js"></script>
-    <script src="crajax.js"></script>
+    <script src="jscript.js"></script>
 
 </body></html>
