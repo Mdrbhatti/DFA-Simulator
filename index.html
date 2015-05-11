@@ -48,8 +48,9 @@
       <div class="jumbotron">
         <center><h2 id="ddd">DFA Simulator</h2></center>
         <div class="bs-callout bs-callout-info">
+        <div id ="divDfa" style="visibility:visible;">
         <form id = "dfaform" action="">
-          <label class="checkbox-inline" id = "startingStateLabel" style="visibility:visible;">
+          <label class="checkbox-inline" id = "startingStateLabel">
           <!-- !-->
             <input type="checkbox" id="startingState" name="startingState" value="1" > <strong>Starting State</strong>
           </label>
@@ -72,6 +73,12 @@
           <!-- !-->
          <button type="button" class="btn btn-primary" onclick="dfaCreator(this.form)">Add</button>
         </form>
+        </label>
+        </div>
+        </div>
+        <center><button type="button" class="btn btn-primary" onclick="createLinkedList()">Create DFA</button></center>
+        </br>
+        </br>
 
         <form id = "stringForm" action="">
           <div class="form-group">
@@ -79,14 +86,10 @@
             <!-- !-->
           <input type="text" class="form-control" id="inputString" name="inputString" placeholder="Enter String" required>
           </div>
-          <button type="button" class="btn btn-primary" onclick="verifyString(this.form)">Add</button>
+          <button type="button" class="btn btn-primary" onclick="verifyString(this.form)">Check</button>
         </form>
 
-        </div>
-        <center><button type="button" class="btn btn-primary">Create DFA</button></center>
-        </br>
-        </br>
-        <center><button type="button" class="btn btn-primary">Show Transition Table</button></center>
+        <!-- <center><button type="button" class="btn btn-primary">Show Transition Table</button></center> -->
       </div> <!-- /container -->
 
     <!-- Bootstrap core JavaScript

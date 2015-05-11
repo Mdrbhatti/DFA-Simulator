@@ -3,10 +3,11 @@ var stateList = [];
 var startStateObj = null;
 function stateObj(){
 	this.name = "";
-	this.startingState = false;
-	this.finalState = false;
+	this.startingState = 0;
+	this.finalState = 0;
 	this.transitions = {};
 	this.next = {};
+	this.loopedOver = 0;
 	this.initialize = function(startingState, finalState, name, transitions)
 	{
 		this.startingState = startingState;
@@ -32,6 +33,7 @@ function findStateObject(name)
 
 function recur(currentStateObject, transitions)
 {
+	currentStateObject.loopedOver = 1;
 	if (transitions.length <= 0)
 		return;
 	else
@@ -42,7 +44,10 @@ function recur(currentStateObject, transitions)
 		    var nextStateObj = findStateObject(nextState);
 		    if(nextStateObj != null){
 			    currentStateObject.next[symbol] = nextStateObj;
-			    recur(nextStateObj, nextStateObj.transitions);
+			    if(nextStateObj.loopedOver != 1)
+			    {
+			    	recur(nextStateObj, nextStateObj.transitions);
+			    }			    
 			}
 		    // console.log(value);
 		}
@@ -55,7 +60,16 @@ function recur(currentStateObject, transitions)
 function createLinkedList()
 {
 	var start = startStateObj;
-	recur(start, start.transitions);
+	if(start){
+		var ele = document.getElementById("divDfa");
+		ele.style.visibility="hidden";
+		
+		recur(start, start.transitions);
+	}
+	else
+	{
+		alert("Please add states/transitions to DFA");
+	}
 
 
 }
@@ -63,7 +77,29 @@ function createLinkedList()
 function verifyString(form)
 {
 	var stringToCheck = form.inputString.value;
+	var tempState = startStateObj;
 
+	if(stringToCheck=="" && tempState.finalState==1)
+	{
+		console.log("NULL ACCEPTING");
+		return 1;
+	}
+	
+	for (var i = 0; i < stringToCheck.length; i++) {
+		console.log(tempState);
+		
+		tempState = tempState.next[stringToCheck.charAt(i)];
+		if(!tempState)
+		{
+			return 0;
+		}
+	}
+	if(tempState.finalState == 1)
+	{
+		console.log("ACCEPTING");
+		return 1;
+	}
+	return 0;
 }
 
 function dfaCreator(form) {
@@ -87,9 +123,11 @@ function dfaCreator(form) {
 		ele.style.visibility="hidden";
 		isStartingStateSet = true;
 		startStateObj = currentState;
+		// currentState.loopedOver = 1;
 	}
 
 	var transitions = {};
+	transitionsString = transitionsString.replace(/\s+/g, '');
 	if(transitionsString != ""){
 		token = transitionsString.split(',');
 		for (i = 0; i < token.length; i+=2) { 
@@ -102,14 +140,14 @@ function dfaCreator(form) {
 	}
 	else
 	{
-		alert("empty");
+		// alert("empty");
 	}
 	alert(JSON.stringify(transitions));
 
 	
 	currentState.initialize(startingState,finalState,stateName,transitions);
 	stateList.push(currentState);
-	alert(JSON.stringify(stateList));
+	// alert(JSON.stringify(stateList));
 	
 	$('#dfaform')[0].reset();
 }
