@@ -11,6 +11,7 @@ function stateObj(){
 	this.startingState = 0;
 	this.finalState = 0;
 	this.transitions = {};
+	this.reachable = 0;
 	/* 
 	 * Similar to transitions, but it holds the OBJECT reference to the next state, instead of just its STRING NAME
 	 * 		Key: Symbol
@@ -76,6 +77,7 @@ function recur(currentStateObject, transitions)
 			    if(nextStateObj.loopedOver != 1)
 			    {
 			    	currentStateObject.loopedOver = 1;
+			    	nextStateObj.reachable = 1;
 			    	recur(nextStateObj, nextStateObj.transitions);
 			    }			    
 			}
@@ -96,6 +98,7 @@ function createLinkedList()
 {
 	var start = startStateObj;
 	if(start){
+		start.reachable = 1;
 		var ele = document.getElementById("divDfa");
 		ele.style.visibility="hidden";		
 		recur(start, start.transitions);
@@ -151,14 +154,35 @@ function verifyString(form)
 
 function isLanguageEmpty()
 {
-
+	var ver_el = document.getElementById("isLanguageEmpty");
+	// find unreachable state
+	isLangEmpty = true;
+	for (var i = 0; i < finalStateList.length; i++) {
+	    if(finalStateList[i].reachable == 1 ){
+	    	isLangEmpty = false;
+	    	break;
+	    }
+	}
+	if(isLangEmpty)
+	{
+		ver_el.innerHTML ='<font face="verdana" color="green">True!</font>';
+	}
+	else
+	{
+		ver_el.innerHTML ='<font face="verdana" color="red">False!</font>';
+	}
 }
-
-function isLanguageInfinite()
+function containsEpsilon()
 {
-
+	var ver_el = document.getElementById("isContainingEpsilon");
+	if(startStateObj.finalState == 1)
+	{
+		ver_el.innerHTML ='<font face="verdana" color="green">True!</font>';
+	}
+	else{
+		ver_el.innerHTML ='<font face="verdana" color="red">False!</font>';
+	}
 }
-
 function recur2(currentStateObject, my_string, current_length)
 {
 	current_length++;
@@ -189,6 +213,9 @@ function generateAllPossibleWords()
 	allWordsList = [];
 	// console.log("In recur2\n");
 	recur2(startStateObj, my_string, current_length);
+	var ver_el = document.getElementById("wordList");
+	var quotedAndCommaSeparated = "'" + allWordsList.join("','") + "'";
+	ver_el.innerHTML ='<font face="verdana" color="green">' + quotedAndCommaSeparated + '</font>';
 	// console.log(allWordsList)
 	return allWordsList;
 
