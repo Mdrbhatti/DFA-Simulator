@@ -1,7 +1,8 @@
 var isStartingStateSet = false;
 var stateList = [];
 var startStateObj = null;
-
+var finalStateList = []
+var allWordsList = []
 /* 
  * State Object (stores state information e.g. transitions/name/properties)
  */
@@ -158,16 +159,44 @@ function isLanguageInfinite()
 
 }
 
+function recur2(currentStateObject, my_string, current_length)
+{
+	current_length++;
+	if(currentStateObject.finalState == 1){
+		allWordsList.push(my_string)
+	}
+	if(Object.getOwnPropertyNames(currentStateObject.next).length === 0 || current_length == 10){
+		// if(currentStateObject.finalState == 1){
+		// 	allWordsList.push(my_string)
+		// }
+		return;
+	}
+	else
+	{
+		next = currentStateObject.next;
+		for (var symbol in next) {
+		    var nextStateObj = next[symbol];
+		    new_string = my_string + symbol;
+	    	recur2(nextStateObj, new_string, current_length);		    
+		}
+	}
+}
+
 function generateAllPossibleWords()
 {
-	
+	var max_length = 10;
+	var current_length = 0;
+	var my_string = "";
+	recur2(startStateObj, my_string, current_length);
+	console.log(allWordsList)
+
 }
 /* 
  * Called by the 'Add' button
  */
 function dfaCreator(form) {
 	var startingState = 0;
-	var finalStae = 0;
+	var finalState = 0;
 	if($("#startingState").is(':checked'))
 	{
 		startingState = 1;
@@ -221,6 +250,13 @@ function dfaCreator(form) {
 	 * Append the currentState to the GLOBAL stateList (so all *added* states can be viewed outside this function)  
 	 */
 	stateList.push(currentState);
+	/*
+	 * Add to Final state list
+	 */
+	if(finalState)
+	{
+		finalStateList.push(currentState);
+	}
 	
 	$('#dfaform')[0].reset();
 }
