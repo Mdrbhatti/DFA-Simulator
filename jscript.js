@@ -40,7 +40,7 @@ function findStateObject(name)
 
 	for (var i = 0; i < stateList.length; i++) {
 	    if(stateList[i].name === name ){
-	    	console.log(stateList[i]);
+	    	// console.log(stateList[i]);
 	    	return stateList[i];
 	    }
 	}
@@ -165,19 +165,18 @@ function recur2(currentStateObject, my_string, current_length)
 	if(currentStateObject.finalState == 1){
 		allWordsList.push(my_string)
 	}
-	if(Object.getOwnPropertyNames(currentStateObject.next).length === 0 || current_length == 10){
-		// if(currentStateObject.finalState == 1){
-		// 	allWordsList.push(my_string)
-		// }
+	if(Object.getOwnPropertyNames(currentStateObject.next).length === 0 || current_length > 10){
 		return;
 	}
 	else
 	{
-		next = currentStateObject.next;
-		for (var symbol in next) {
-		    var nextStateObj = next[symbol];
+		for (var symbol in currentStateObject.next) {
+		    var nextStateObj = currentStateObject.next[symbol];
 		    new_string = my_string + symbol;
-	    	recur2(nextStateObj, new_string, current_length);		    
+
+		    if(nextStateObj != null){
+	    		recur2(nextStateObj, new_string, current_length);
+	    	}		    
 		}
 	}
 }
@@ -187,8 +186,11 @@ function generateAllPossibleWords()
 	var max_length = 10;
 	var current_length = 0;
 	var my_string = "";
+	allWordsList = [];
+	// console.log("In recur2\n");
 	recur2(startStateObj, my_string, current_length);
-	console.log(allWordsList)
+	// console.log(allWordsList)
+	return allWordsList;
 
 }
 /* 
