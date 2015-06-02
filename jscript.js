@@ -148,6 +148,20 @@ function verifyString(form)
 	return 0;
 }
 
+function isLanguageEmpty()
+{
+
+}
+
+function isLanguageInfinite()
+{
+
+}
+
+function generateAllPossibleWords()
+{
+	
+}
 /* 
  * Called by the 'Add' button
  */
