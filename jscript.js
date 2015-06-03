@@ -112,23 +112,17 @@ function createLinkedList()
 
 }
 
-
+/* Draws the graph corresponding to the DFA
+ * Yellow circle denotes a final state, while blue states are normal states
+ * Starting state is labelled
+*/
 function drawDfaGraph()
 {
 	document.getElementById('mynetwork').style.height = "600px"
-	// document.getElementById('mynetwork').style.width = "800px"
 	document.getElementById('mynetwork').style.visibility = "visible";
 	document.getElementById('dfa_create_button').style.visibility = "hidden";
-	
-	// var nodes = [
-	// 	{id: 1, label: 'Node 1', font: '12px arial red', group: 1},
-	// 	{id: 2, label: 'Node 2', font: {size:12, color:'lime', face:'arial'}, group: 3},
-	// 	{id: 3, label: 'Node 3', font: '18px verdana blue', group: 4},
-	// 	{id: 4, label: 'Node 4', font: {size:12, color:'red', face:'sans', background:'white'}, group: 2},
-	// 	{id: 5, label: 'Node 5', image: 'final.png', font: {size:15, color:'red', face:'courier', strokeWidth:3, strokeColor:'#ffffff'}, shape: 'circularImage', group: 2}
-	// ];
-
 	// get nodes
+	
 	var nodes = [];
 	dict = {id:'1startingstate', label: 'Start', group: 1};
 	nodes.push(dict);
@@ -142,9 +136,7 @@ function drawDfaGraph()
 		if(stateList[i].finalState == 1)
 		{
 			dict['font'] = {size:15, color:'red', face:'arial', strokeWidth:3, strokeColor:'#ffffff'};
-			// dict['image'] = 'final.png';
 			dict['group'] = 2;
-			
 		}
 		nodes.push(dict);
 	}
@@ -167,16 +159,6 @@ function drawDfaGraph()
 	    	edges.push(dict);
 	    }
 	}
-	console.log(edges);
-
-	// create an array with edges
-	// var edges = [
-	// 	{from: 1, to: 1, arrows: 'to', label: '131'},
-	// 	{from: 3, to: 3, arrows: 'to', label: 'hello'},
-	// 	{from: 2, to: 4},
-	// 	{from: 2, to: 5},
-	// 	{from: 2, to: 1}
-	// ];
 
 	// create a network
 	var container = document.getElementById('mynetwork');
@@ -190,19 +172,6 @@ function drawDfaGraph()
 		  size: 10
 		}
 	};
-
-	// var options = {
-	// 	edges: {
-	// 	smooth: true,
-	// 	arrows: {to : true }
-	// 	},
-	// 	layout: {
-	// 		hierarchical:{
-	// 		// direction: 'LR',
-	// 		// sortMethod: 'directed'
-	// 		}
-	// 	}
-	// };
 	var options = {layout:{randomSeed:2}};
 	var network = new vis.Network(container, data, options);
 }
@@ -250,6 +219,7 @@ function verifyString(form)
 	return 0;
 }
 
+/* Check if language is empty */
 function isLanguageEmpty()
 {
 	var ver_el = document.getElementById("isLanguageEmpty");
@@ -270,6 +240,8 @@ function isLanguageEmpty()
 		ver_el.innerHTML ='<font face="verdana" color="red">False!</font>';
 	}
 }
+
+/* Check if the language contains epsilon */
 function containsEpsilon()
 {
 	var ver_el = document.getElementById("isContainingEpsilon");
@@ -281,6 +253,23 @@ function containsEpsilon()
 		ver_el.innerHTML ='<font face="verdana" color="red">False!</font>';
 	}
 }
+
+/* 
+ * Called by generateAllPossibleWords
+ * Its a recursive function
+ * Finds all the words accepted by the DFA, with length <= 10
+ *
+ * Base case:
+ *    If word length is more than 10 or if a state has no transitions
+ *
+ * Recursive case:
+ *    Transitions exist from current state to AT LEAST one other state
+ * 	  DO:
+ *       Get nextState
+ * 		 Get the symbol from currentState that makes the transition possible to nextState
+ *       Add that symbol to the total_string, which is then carried forward through new recur2 calls
+ *		 And if a final state is encountered, its added on the accepted words list
+ */
 function recur2(currentStateObject, my_string, current_length)
 {
 	current_length++;
@@ -303,20 +292,17 @@ function recur2(currentStateObject, my_string, current_length)
 	}
 }
 
+/* Generate all the possible words that are accepted by the DFA, of length <= 10 */
 function generateAllPossibleWords()
 {
 	var max_length = 10;
 	var current_length = 0;
 	var my_string = "";
 	allWordsList = [];
-	// console.log("In recur2\n");
 	recur2(startStateObj, my_string, current_length);
 	var ver_el = document.getElementById("wordList");
 	var quotedAndCommaSeparated = "'" + allWordsList.join("','") + "'";
 	ver_el.innerHTML ='<font face="verdana" color="green">' + quotedAndCommaSeparated + '</font>';
-	// console.log(allWordsList)
-	return allWordsList;
-
 }
 /* 
  * Called by the 'Add' button
