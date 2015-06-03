@@ -16,6 +16,8 @@
     <link href="docs.min.css" rel="stylesheet">
     <link href="theme.css" rel="stylesheet">
     <script src="jscript.js"></script>
+    <script type="text/javascript" src="vis.js"></script>
+    <link href="vis.css" rel="stylesheet" type="text/css" />
  
   <style type="text/css" id="holderjs-style"></style></head>
 
@@ -48,6 +50,7 @@
       <div class="jumbotron">
         <center><h2 id="ddd">DFA Simulator</h2></center>
         <div class="bs-callout bs-callout-info">
+        <div id ="mynetwork" style="visibility:hidden;">
         <div id ="divDfa" style="visibility:visible;">
         <form id = "dfaform" action="">
           <label class="checkbox-inline" id = "startingStateLabel">
@@ -76,7 +79,7 @@
         </label>
         </div>
         </div>
-        <center><button type="button" class="btn btn-primary" onclick="createLinkedList()">Create DFA</button></center>
+        <center><button type="button" class="btn btn-primary" onclick="createLinkedList()" style="visibility:visible" id = "dfa_create_button">Create DFA</button></center>
         </br>
         </br>
         <button type="button" class="btn btn-primary" onclick="containsEpsilon()">Contains Epsilon?</button>
@@ -111,5 +114,6 @@
     <script src="bootstrap.js"></script>
     <script src="docs.js"></script>
     <script src="jscript.js"></script>
+
 
 </body></html>

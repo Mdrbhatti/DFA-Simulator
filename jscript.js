@@ -96,6 +96,7 @@ function recur(currentStateObject, transitions)
 
 function createLinkedList()
 {
+
 	var start = startStateObj;
 	if(start){
 		start.reachable = 1;
@@ -107,6 +108,103 @@ function createLinkedList()
 	{
 		alert("Please add states/transitions to DFA");
 	}
+	drawDfaGraph();
+
+}
+
+
+function drawDfaGraph()
+{
+	document.getElementById('mynetwork').style.height = "600px"
+	// document.getElementById('mynetwork').style.width = "800px"
+	document.getElementById('mynetwork').style.visibility = "visible";
+	document.getElementById('dfa_create_button').style.visibility = "hidden";
+	
+	// var nodes = [
+	// 	{id: 1, label: 'Node 1', font: '12px arial red', group: 1},
+	// 	{id: 2, label: 'Node 2', font: {size:12, color:'lime', face:'arial'}, group: 3},
+	// 	{id: 3, label: 'Node 3', font: '18px verdana blue', group: 4},
+	// 	{id: 4, label: 'Node 4', font: {size:12, color:'red', face:'sans', background:'white'}, group: 2},
+	// 	{id: 5, label: 'Node 5', image: 'final.png', font: {size:15, color:'red', face:'courier', strokeWidth:3, strokeColor:'#ffffff'}, shape: 'circularImage', group: 2}
+	// ];
+
+	// get nodes
+	var nodes = [];
+	dict = {id:'1startingstate', label: 'Start', group: 1};
+	nodes.push(dict);
+	for (var i = 0; i < stateList.length; i++) {
+		dict = {};
+		dict['id'] = stateList[i].name;
+		dict['label'] = stateList[i].name;
+		dict['font'] = '12px arial red';
+		dict['group'] = 1;
+		dict['shape'] = 'circle';
+		if(stateList[i].finalState == 1)
+		{
+			dict['font'] = {size:15, color:'red', face:'arial', strokeWidth:3, strokeColor:'#ffffff'};
+			// dict['image'] = 'final.png';
+			dict['group'] = 2;
+			
+		}
+		nodes.push(dict);
+	}
+	console.log(nodes);
+
+	// get edges
+	var edges = [];
+	dict = {from:'1startingstate', to: startStateObj.name, arrows: 'to'};
+	edges.push(dict);
+	for (var i = 0; i < stateList.length; i++) {
+		curr_state = stateList[i];
+		
+	    for (var symbol in curr_state.next){
+	    	next_state = curr_state.next[symbol];
+	    	dict = {};
+	    	dict['from'] = curr_state.name;
+	    	dict['to'] = next_state.name;
+	    	dict['arrows'] = 'to';
+	    	dict['label'] = symbol;
+	    	edges.push(dict);
+	    }
+	}
+	console.log(edges);
+
+	// create an array with edges
+	// var edges = [
+	// 	{from: 1, to: 1, arrows: 'to', label: '131'},
+	// 	{from: 3, to: 3, arrows: 'to', label: 'hello'},
+	// 	{from: 2, to: 4},
+	// 	{from: 2, to: 5},
+	// 	{from: 2, to: 1}
+	// ];
+
+	// create a network
+	var container = document.getElementById('mynetwork');
+	var data = {
+		nodes: nodes,
+		edges: edges
+	};
+	var options = {
+		nodes : {
+		  shape: 'dot',
+		  size: 10
+		}
+	};
+
+	// var options = {
+	// 	edges: {
+	// 	smooth: true,
+	// 	arrows: {to : true }
+	// 	},
+	// 	layout: {
+	// 		hierarchical:{
+	// 		// direction: 'LR',
+	// 		// sortMethod: 'directed'
+	// 		}
+	// 	}
+	// };
+	var options = {layout:{randomSeed:2}};
+	var network = new vis.Network(container, data, options);
 }
 
 /* 
