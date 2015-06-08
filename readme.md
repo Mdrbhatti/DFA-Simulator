@@ -14,3 +14,6 @@ A simple DFA simulator in HTML/CSS/JS
 
 - [Bootstrap](www.getbootstrap.com) for Web Interface
 - [vis.js](www.visjs.org) for DFA Visualization
+
+**Online demo**
+[DEMO](mdrbhatti.github.io/DFA/)
